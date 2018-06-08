@@ -16,5 +16,6 @@ uint8_t button_write_indexes(uint8_t button_mask);
 uint8_t button_warn_change(uint8_t button_mask);
 void button_prompt_tx(uint8_t button_mask);
 void button_handle_menu_idx(uint8_t button_mask, uint8_t array_sz);
+void button_timeout(uint8_t button_mask);
 
 #endif // UI_BUTTONS_H

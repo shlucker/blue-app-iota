@@ -1,6 +1,7 @@
 #include "os_io_seproxyhal.h"
 #include "iota_io.h"
 #include "storage.h"
+#include "timer.h"
 #include "ui/ui.h"
 
 // define global SDK variables
@@ -115,6 +116,7 @@ unsigned char io_event(unsigned char channel)
         break;
 
     case SEPROXYHAL_TAG_BUTTON_PUSH_EVENT: // for Nano S
+        timer_set(50);
         UX_BUTTON_PUSH_EVENT(G_io_seproxyhal_spi_buffer);
         break;
 
@@ -125,6 +127,17 @@ unsigned char io_event(unsigned char channel)
         else {
             UX_DISPLAYED_EVENT();
         }
+        break;
+        
+    case SEPROXYHAL_TAG_TICKER_EVENT:
+        timer_tick();
+        
+        if (timer_expired()) {
+            io_send(NULL, 0, SW_TIMEOUT);
+            ui_display_timeout();
+            //os_sched_exit(0);
+        }
+        
         break;
 
         // unknown events are acknowledged
@@ -168,6 +181,8 @@ __attribute__((section(".boot"))) int main(void)
 
             USB_power(0);
             USB_power(1);
+            
+            deactivate_timer();
 
             IOTA_main();
         }

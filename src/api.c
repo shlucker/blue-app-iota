@@ -3,6 +3,7 @@
 #include "aux.h"
 #include "iota_io.h"
 #include "storage.h"
+#include "timer.h"
 #include "ui/ui.h"
 #include <string.h>
 
@@ -485,6 +486,7 @@ unsigned int api_write_indexes(unsigned char *input_data, unsigned int len)
         }
     }
 
+    timer_activate(50);
     ui_display_write_indexes(seed_indexes);
     return IO_ASYNCH_REPLY;
 }
@@ -496,12 +498,14 @@ void write_indexes_approve(const uint32_t *seed_indexes)
         storage_write_seed_index(i, seed_indexes[i]);
     }
 
+    deactivate_timer();
     ui_restore();
     io_send(NULL, 0, SW_OK);
 }
 
 void write_indexes_deny()
 {
+    deactivate_timer();
     ui_restore();
     io_send(NULL, 0, SW_SECURITY_STATUS_NOT_SATISFIED);
 }

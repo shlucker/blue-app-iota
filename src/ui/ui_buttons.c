@@ -259,3 +259,11 @@ void button_handle_menu_idx(uint8_t button_mask, uint8_t array_sz)
     else if (button_mask == BUTTON_R)
         ui_state.menu_idx = MIN(array_sz, ui_state.menu_idx + 1);
 }
+
+void button_timeout(uint8_t button_mask)
+{
+    if (button_mask == BUTTON_B) {
+        // return to main menu
+        state_go(STATE_WELCOME, 0);
+    }
+}

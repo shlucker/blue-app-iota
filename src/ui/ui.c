@@ -156,6 +156,19 @@ void ui_display_welcome()
     ui_render();
 }
 
+void ui_display_timeout()
+{
+    clear_display();
+    write_display("Timeout", TYPE_STR, MID);
+    
+    display_glyphs_confirm(ui_glyphs.glyph_warn, NULL);
+    
+    ui_state.state = STATE_TIMEOUT;
+    
+    ui_render();
+    ui_force_draw();
+}
+
 void ui_display_calc()
 {
     clear_display();
@@ -344,9 +357,14 @@ void ui_handle_button(uint8_t button_mask)
     case STATE_PROMPT_TX:
         button_prompt_tx(button_mask);
         return;
+        /* ------------ STATE WARN_CHANGE -------------- */
     case STATE_WARN_CHANGE:
         array_sz = button_warn_change(button_mask);
         break;
+        /* ------------ STATE TIMEOUT -------------- */
+    case STATE_TIMEOUT:
+        button_timeout(button_mask);
+        return;
     case STATE_IGNORE:
         return;
         /* ------------ DEFAULT -------------- */
@@ -414,6 +432,8 @@ void ui_build_display()
     case STATE_WARN_CHANGE:
         display_warn_change();
         break;
+        /* ------------ TIMEOUT STATE -------------- */
+    case STATE_TIMEOUT:
         /* ------------ IGNORE STATE -------------- */
     case STATE_IGNORE:
         return;

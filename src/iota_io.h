@@ -40,6 +40,7 @@ unsigned int iota_dispatch();
 #define OFFSET_CDATA 5
 
 #define SW_OK 0x9000
+#define SW_TIMEOUT 0x8999
 
 #define SW_INCORRECT_LENGTH 0x6700
 
