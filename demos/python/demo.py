@@ -69,6 +69,7 @@ dongle = getDongle(True)
 exceptionCount = 0
 start_time = time.time()
 
+
 print("\nReading AppConfig...")
 response = dongle.exchange(apdu_command(INS_GET_APP_CONFIG, []))
 struct = unpack_get_app_config(response)
@@ -78,22 +79,22 @@ print("\nVersion: %d.%d.%d" % (struct[1], struct[2], struct[3]))
 print("\nInitializing IOTA seed for security-level=%d..." % SECURITY_LEVEL)
 dongle.exchange(apdu_command(INS_SET_SEED, pack_set_seed_input(BIP44_PATH)))
 
-print("\nGenerating address for index=%d..." % SRC_INDEX)
-response = dongle.exchange(apdu_command(INS_PUBKEY, pack_pub_key_input(SRC_INDEX)))
-struct = unpack_pubkey_output(response)
-print("  Address: %s" % struct[0].decode("utf-8"))
+#print("\nGenerating address for index=%d..." % SRC_INDEX)
+#response = dongle.exchange(apdu_command(INS_PUBKEY, pack_pub_key_input(SRC_INDEX)))
+#struct = unpack_pubkey_output(response)
+#print("  Address: %s" % struct[0].decode("utf-8"))
 
-print("\nDisplaying address on the Ledger Nano...")
-dongle.exchange(apdu_command(INS_DISP_ADDR, pack_pub_key_input(SRC_INDEX)))
+#print("\nDisplaying address on the Ledger Nano...")
+#dongle.exchange(apdu_command(INS_DISP_ADDR, pack_pub_key_input(SRC_INDEX)))
 
 print("\nInitializing ledger indexes...")
 dongle.exchange(apdu_command(INS_INIT_LEDGER, pack_init_ledger_input(1, 4, 12, 2, 12)))
 
-print("\nReading ledger indexes...")
-response = dongle.exchange(apdu_command(INS_GET_INDEXES, []))
-struct = unpack_get_indexes(response)
-print("\n[1]: %d   [2]: %d   [3]: %d   [4]: %d   [5]: %d" %
-      (struct[0], struct[1], struct[2], struct[3], struct[4]))
+#print("\nReading ledger indexes...")
+#response = dongle.exchange(apdu_command(INS_GET_INDEXES, []))
+#struct = unpack_get_indexes(response)
+#print("\n[1]: %d   [2]: %d   [3]: %d   [4]: %d   [5]: %d" %
+#      (struct[0], struct[1], struct[2], struct[3], struct[4]))
 
 elapsed_time = time.time() - start_time
 print("\nTime Elapsed: %ds" % elapsed_time)
